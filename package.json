@@ -1,9 +1,11 @@
 {
-  "name": "demo-repo",
-  "version": "0.2.0",
-  "description": "A sample package.json",
   "dependencies": {
-    "@primer/css": "17.0.1"
+    "chrome-types": "^0.1.277"
   },
-  "license": "MIT"
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3"
+  }
 }
