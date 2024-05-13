@@ -4,18 +4,18 @@ function getAllTextNodes() {
     document.body,
     NodeFilter.SHOW_TEXT,
     null,
-    false,
+    false
   );
 
   let textNodes = [];
   let node = walker.nextNode();
   while (node) {
-    // 노드가 존재하는 동안 반복합니다.
-    textNodes.push(node.textContent);
-    node = walker.nextNode(); // 다음 노드로 이동합니다.
+    textNodes.push(node);
+    node = walker.nextNode();
   }
   return textNodes;
 }
+
 // 추출한 외국어 텍스트를 백그라운드 스크립트로 전송하는 함수
 function sendForeignTextToBackground(textNodes) {
   let gotTexts = textNodes.map(function (node) {
@@ -25,6 +25,16 @@ function sendForeignTextToBackground(textNodes) {
 }
 
 // 메인 작업: 영어 텍스트 추출 후 백그라운드 스크립트로 전송
-
-textNodes = getAllTextNodes();
+let textNodes = getAllTextNodes();
 sendForeignTextToBackground(textNodes);
+
+// 백그라운드 스크립트로부터 번역된 텍스트를 받아서 페이지에 반영
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'TranslatedText') {
+    const translatedTexts = message.data;
+    let textNodes = getAllTextNodes();
+    textNodes.forEach((node, index) => {
+      node.textContent = translatedTexts[index];
+    });
+  }
+});
