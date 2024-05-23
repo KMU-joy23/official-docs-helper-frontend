@@ -3,14 +3,19 @@ function getAllTextNodes() {
   let walker = document.createTreeWalker(
     document.body,
     NodeFilter.SHOW_TEXT,
-    null,
-    false
+    (node) =>
+      node.nodeValue.trim() !== ''
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT,
+    false,
   );
 
   let textNodes = [];
   let node = walker.nextNode();
   while (node) {
-    textNodes.push(node);
+    if (node.textContent.trim().length > 0) {
+      textNodes.push(node);
+    }
     node = walker.nextNode();
   }
   return textNodes;
@@ -18,10 +23,12 @@ function getAllTextNodes() {
 
 // 추출한 외국어 텍스트를 백그라운드 스크립트로 전송하는 함수
 function sendForeignTextToBackground(textNodes) {
-  let gotTexts = textNodes.map(function (node) {
-    return node.textContent;
+  let gotTexts = textNodes.map((node) => node.textContent.trim());
+  chrome.runtime.sendMessage({ type: 'Text', data: gotTexts }, (response) => {
+    if (chrome.runtime.lastError) {
+      console.error('Error sending message:', chrome.runtime.lastError);
+    }
   });
-  chrome.runtime.sendMessage({ type: 'Text', data: gotTexts });
 }
 
 // 메인 작업: 영어 텍스트 추출 후 백그라운드 스크립트로 전송
@@ -33,8 +40,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'TranslatedText') {
     const translatedTexts = message.data;
     let textNodes = getAllTextNodes();
-    textNodes.forEach((node, index) => {
-      node.textContent = translatedTexts[index];
-    });
+    if (textNodes.length === translatedTexts.length) {
+      textNodes.forEach((node, index) => {
+        node.textContent = translatedTexts[index];
+      });
+    }
   }
 });

@@ -3,7 +3,7 @@
   "name": "북악번역확장프로그램",
   "version": "1.0",
   "description": "웹페이지의 영어 텍스트를 한국어로 자동으로 번역합니다.",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "https://*/*", "http://*/*"],
   "background": {
     "service_worker": "background.js"
   },
@@ -22,14 +22,8 @@
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icon16.png",
-      "48": "icon48.png"
-    }
-  },
-  "browser_action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon16.png",
-      "48": "icon48.png"
+      "48": "icon48.png",
+      "128": "icon128.png"
     }
   }
 }

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
+  <meta charset="UTF-8">
   <title>번역 확장 프로그램</title>
+  <link rel="stylesheet" href="style.css"> <!-- 스타일 시트 연결 -->
   <script src="popup.js"></script>
 </head>
 <body>
   <h1>번역할 텍스트를 입력하세요:</h1>
+  <label for="inputText">텍스트 입력:</label> <!-- 레이블 추가 -->
   <textarea id="inputText" rows="4" cols="50"></textarea><br>
   <button id="translateButton">번역하기</button>
   <h2>번역 결과:</h2>
