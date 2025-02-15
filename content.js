@@ -15,6 +15,7 @@ function getAllTextNodes() {
   }
   return textNodes;
 }
+//getattribute로 translate no라고 돼있는 애 빼고 리스트에 담아서 백에 보내기
 
 // 추출한 외국어 텍스트를 백그라운드 스크립트로 전송하는 함수
 function sendForeignTextToBackground(textNodes) {
